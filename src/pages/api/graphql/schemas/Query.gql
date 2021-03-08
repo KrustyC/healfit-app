@@ -1,0 +1,4 @@
+type Query {
+  getUsers: [GithubUser]
+  getUser(name: String!): GithubUser!
+}

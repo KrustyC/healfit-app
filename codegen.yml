@@ -1,0 +1,24 @@
+overwrite: true
+schema: 'src/pages/api/**/*.gql'
+documents: null
+generates:
+  src/types-generated/graphql.ts:
+    config:
+      contextType: ../types/graphql-context#Context
+      defaultMapper: DeepPartial<{T} | null>
+      namingConvention: keep
+      declarationKind:
+        type: 'interface'
+        input: 'interface'
+        maybeValue: T | null | undefined
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+      - add:
+          content: "import { DeepPartial } from 'utility-types';"
+  src/types-generated/generated-mocks.ts:
+    plugins:
+      - 'graphql-codegen-typescript-mock-data':
+          typesFile: './graphql.ts'
+          enumValues: upper-case#upperCase
+          typenames: keep
