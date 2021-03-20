@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { handleAuth, handleCallback, Session } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { handleAuth, handleCallback, Session } from '@auth0/nextjs-auth0';
 import { config } from 'config';
 import { connectDB } from 'middlewares/mongodb';
 import { UserModel } from 'models/User/User.model';
@@ -68,7 +68,9 @@ async function afterCallback(
 const authHandler = handleAuth({
   async callback(req, res) {
     try {
-      await handleCallback(req, res, { afterCallback });
+      await handleCallback(req, res, {
+        afterCallback,
+      });
     } catch (error) {
       res.status(error.status || 500).end(error.message);
     }

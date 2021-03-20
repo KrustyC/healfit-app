@@ -1,11 +1,15 @@
-import { QueryResolvers } from 'types-generated/graphql';
-import { getUser, getUsers } from './users';
+import { QueryResolvers, RecipeResolvers } from 'types-generated/graphql-api';
+import { getRecipes, getIngredientByRecipe } from './recipes';
 
 const Query: Partial<QueryResolvers> = {
-  getUser,
-  getUsers,
+  recipes: getRecipes,
+};
+
+const Recipe: Partial<RecipeResolvers> = {
+  ingredients: getIngredientByRecipe,
 };
 
 export const resolvers = {
   Query,
+  Recipe,
 };

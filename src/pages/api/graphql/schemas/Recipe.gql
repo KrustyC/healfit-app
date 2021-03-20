@@ -1,0 +1,65 @@
+input RecipeFiltersInput {
+  diet: String
+}
+
+type GetRecipesResponse {
+  results: [Recipe]
+  offset: Int
+  number: Int
+  totalResults: Int
+}
+
+type Recipe {
+  id: ID
+  image: String
+  imageType: String
+  title: String
+  ingredients: [RecipeIngredient]
+  nutrition: Nutrition
+}
+
+type MetricUnit {
+  unit: String
+  value: Float
+}
+
+type UsUnit {
+  unit: String
+  value: Float
+}
+
+type RecipeIngredientAmount {
+  metric: MetricUnit
+  us: UsUnit
+}
+
+type RecipeIngredient {
+  amount: RecipeIngredientAmount
+  image: String
+  name: String
+}
+
+type Nutrition {
+  nutrients: [Nutrient]
+  caloricBreakdown: CaloricBreakdown
+  weightPerServing: WeightPerServing
+}
+
+type Nutrient {
+  name: String
+  title: String
+  amount: Float
+  unit: String
+  percentOfDailyNeeds: Float
+}
+
+type CaloricBreakdown {
+  percentProtein: Float
+  percentFat: Float
+  percentCarbs: Float
+}
+
+type WeightPerServing {
+  amount: Int
+  unit: String
+}

@@ -2,11 +2,11 @@ import { ApolloServer } from 'apollo-server-micro';
 import { getSession } from '@auth0/nextjs-auth0';
 import 'graphql-import-node';
 import * as Query from './schemas/Query.gql';
-import * as GithubUser from './schemas/GithubUser.gql';
+import * as Recipe from './schemas/Recipe.gql';
 import { resolvers } from './resolvers';
 
 const apolloServer = new ApolloServer({
-  typeDefs: [Query, GithubUser],
+  typeDefs: [Query, Recipe],
   resolvers,
   context: ({ req, res }) => {
     const session = getSession(req, res);

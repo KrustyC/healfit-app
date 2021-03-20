@@ -1,5 +1,0 @@
-type GithubUser {
-  id: String
-  login: String
-  avatar_url: String
-}

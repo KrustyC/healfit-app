@@ -4,6 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -20,7 +21,7 @@
       "hooks/*": ["./hooks/*"],
       "lib/*": ["./lib/*"],
       "types/*": ["./types/*"],
-      "types-generated/*": ["./types-generated/*"],
+      "types-generated/*": ["./types-generated/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

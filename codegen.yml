@@ -1,21 +1,12 @@
 overwrite: true
-schema: 'src/pages/api/**/*.gql'
-documents: null
+schema: 'src/pages/api/graphql/schemas/*.gql'
 generates:
-  src/types-generated/graphql.ts:
-    config:
-      contextType: ../types/graphql-context#Context
-      defaultMapper: DeepPartial<{T} | null>
-      namingConvention: keep
-      declarationKind:
-        type: 'interface'
-        input: 'interface'
-        maybeValue: T | null | undefined
+  src/types-generated/graphql-api.ts:
     plugins:
       - 'typescript'
       - 'typescript-resolvers'
-      - add:
-          content: "import { DeepPartial } from 'utility-types';"
+      # - 'typescript-operations'
+      # - "typescript-react-apollo"
   src/types-generated/generated-mocks.ts:
     plugins:
       - 'graphql-codegen-typescript-mock-data':
