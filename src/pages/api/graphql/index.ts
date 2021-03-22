@@ -9,6 +9,7 @@ const apolloServer = new ApolloServer({
   typeDefs: [Query, Recipe],
   resolvers,
   context: ({ req, res }) => {
+    console.log('SESSSION');
     const session = getSession(req, res);
 
     return { user: session?.user || undefined };

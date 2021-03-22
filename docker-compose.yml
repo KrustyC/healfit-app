@@ -10,8 +10,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: dbuser
       MONGO_INITDB_ROOT_PASSWORD: dbpass
       MONGO_INITDB_DATABASE: healfit
-    volumes:
-      - mongodb_data_container:/data/db
+#     volumes:
+#       - mongodb_data_container:/data/db
 
-volumes:
-  mongodb_data_container:
+# volumes:
+#   mongodb_data_container:
