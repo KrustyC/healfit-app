@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,@typescript-eslint/no-unused-vars,no-prototype-builtins */
-import { RecipeFiltersInput, GetRecipesResponse, Recipe, MetricUnit, UsUnit, RecipeIngredientAmount, RecipeIngredient, Nutrition, Nutrient, CaloricBreakdown, WeightPerServing } from './graphql';
+import { RecipeFiltersInput, GetRecipesResponse, Equipment, StepIngredient, StepLength, Step, Recipe, MetricUnit, UsUnit, RecipeIngredientAmount, RecipeIngredient, Nutrition, Nutrient, CaloricBreakdown, WeightPerServing } from './graphql';
 
 export const aRecipeFiltersInput = (overrides?: Partial<RecipeFiltersInput>): RecipeFiltersInput => {
     return {
@@ -16,6 +16,39 @@ export const aGetRecipesResponse = (overrides?: Partial<GetRecipesResponse>): Ge
     };
 };
 
+export const anEquipment = (overrides?: Partial<Equipment>): Equipment => {
+    return {
+        id: overrides && overrides.hasOwnProperty('id') ? overrides.id! : '0a8d64d7-3a89-4093-92bb-68d06687641f',
+        image: overrides && overrides.hasOwnProperty('image') ? overrides.image! : 'quia',
+        name: overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'consequatur',
+    };
+};
+
+export const aStepIngredient = (overrides?: Partial<StepIngredient>): StepIngredient => {
+    return {
+        id: overrides && overrides.hasOwnProperty('id') ? overrides.id! : 'b1e014d4-786a-4f64-8f83-f8a455635858',
+        image: overrides && overrides.hasOwnProperty('image') ? overrides.image! : 'laboriosam',
+        name: overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'cum',
+    };
+};
+
+export const aStepLength = (overrides?: Partial<StepLength>): StepLength => {
+    return {
+        number: overrides && overrides.hasOwnProperty('number') ? overrides.number! : 9136,
+        unit: overrides && overrides.hasOwnProperty('unit') ? overrides.unit! : 'sint',
+    };
+};
+
+export const aStep = (overrides?: Partial<Step>): Step => {
+    return {
+        equipment: overrides && overrides.hasOwnProperty('equipment') ? overrides.equipment! : [anEquipment()],
+        ingredients: overrides && overrides.hasOwnProperty('ingredients') ? overrides.ingredients! : [aStepIngredient()],
+        number: overrides && overrides.hasOwnProperty('number') ? overrides.number! : 6660,
+        step: overrides && overrides.hasOwnProperty('step') ? overrides.step! : 'adipisci',
+        length: overrides && overrides.hasOwnProperty('length') ? overrides.length! : aStepLength(),
+    };
+};
+
 export const aRecipe = (overrides?: Partial<Recipe>): Recipe => {
     return {
         id: overrides && overrides.hasOwnProperty('id') ? overrides.id! : 'b49fa43c-ce1c-453f-a955-0e0c26b64fbb',
@@ -24,6 +57,7 @@ export const aRecipe = (overrides?: Partial<Recipe>): Recipe => {
         title: overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'omnis',
         ingredients: overrides && overrides.hasOwnProperty('ingredients') ? overrides.ingredients! : [aRecipeIngredient()],
         nutrition: overrides && overrides.hasOwnProperty('nutrition') ? overrides.nutrition! : aNutrition(),
+        steps: overrides && overrides.hasOwnProperty('steps') ? overrides.steps! : [aStep()],
         vegetarian: overrides && overrides.hasOwnProperty('vegetarian') ? overrides.vegetarian! : true,
         vegan: overrides && overrides.hasOwnProperty('vegan') ? overrides.vegan! : true,
         glutenFree: overrides && overrides.hasOwnProperty('glutenFree') ? overrides.glutenFree! : false,

@@ -9,6 +9,31 @@ type GetRecipesResponse {
   totalResults: Int
 }
 
+type Equipment {
+  id: ID
+  image: String
+  name: String
+}
+
+type StepIngredient {
+  id: ID
+  image: String
+  name: String
+}
+
+type StepLength {
+  number: Int
+  unit: String
+}
+
+type Step {
+  equipment: [Equipment]
+  ingredients: [StepIngredient]
+  number: Int
+  step: String
+  length: StepLength
+}
+
 type Recipe {
   id: ID
   image: String
@@ -16,6 +41,7 @@ type Recipe {
   title: String
   ingredients: [RecipeIngredient]
   nutrition: Nutrition
+  steps: [Step]
 
   vegetarian: Boolean
   vegan: Boolean
