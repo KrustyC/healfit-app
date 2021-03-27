@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Head from 'next/head';
 import { Box, Button, Heading, Image, Main, Text } from 'grommet';
 import { Feature } from 'components/Feature';
+import { BaseLayout } from 'components/BaseLayout';
 
 const Home: FC = () => (
   <div>
@@ -39,7 +40,7 @@ const Home: FC = () => (
           width="100%"
         >
           <Heading size="small">Healfit helps you stay on track with your goals</Heading>
-          <Text textAlign="center">
+          <Text textAlign="start">
             Your health is important and it all starts from the food you eat.
             <br />
             At Healfit we are committed in offering you the best tools to plan your meals and stay
@@ -47,7 +48,7 @@ const Home: FC = () => (
           </Text>
         </Box>
 
-        <Box pad={{ vertical: 'xlarge', horizontal: 'large' }} width={{ max: '80vw' }}>
+        <BaseLayout>
           <Feature
             title="Links, Content & Community. One online homepage."
             text="Say goodbye to boring link pages. Znap organises your links into visual widgets that
@@ -67,7 +68,7 @@ const Home: FC = () => (
             text="Znap doesn't let you mess with the appearance of your page. This saves you time, and means your links are always looking good. 🚀"
             image="https://uploads-ssl.webflow.com/5e3c7a535a0b8ce5f3926ef8/5fff3435de0af135a0bc609d_image-3.png"
           />
-        </Box>
+        </BaseLayout>
       </Main>
     </Box>
   </div>

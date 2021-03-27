@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Anchor, Box, Heading, Image, Text } from 'grommet';
+import { Anchor, Box, Heading, Image, ResponsiveContext, Text } from 'grommet';
 
 interface FeatureProps {
   title: string;
@@ -9,19 +9,32 @@ interface FeatureProps {
 }
 
 export const Feature: FC<FeatureProps> = ({ title, image, text, direction = 'row' }) => (
-  <Box direction={direction} pad={{ vertical: 'medium' }} gap="xlarge" justify="center">
-    <Box wrap overflow="wrap">
-      <Heading level={2} size="medium">
-        {title}
-      </Heading>
-      <Text>{text}</Text>
+  <ResponsiveContext.Consumer>
+    {(size) => {
+      const isSmallScreen = ['small', 'medium'].includes(size);
 
-      <br />
-      <Anchor label="🚀 View demo" href="" />
-    </Box>
+      return (
+        <Box
+          direction={isSmallScreen ? 'column' : direction}
+          pad={{ vertical: 'medium' }}
+          gap="xlarge"
+          justify="center"
+        >
+          <Box wrap overflow="wrap">
+            <Heading level={2} size="medium">
+              {title}
+            </Heading>
+            <Text>{text}</Text>
 
-    <Box flex="grow">
-      <Image src={image} width="550px" />
-    </Box>
-  </Box>
+            <br />
+            <Anchor label="🚀 View demo" href="" />
+          </Box>
+
+          <Box flex="grow">
+            <Image src={image} width={isSmallScreen ? '100%' : '550px'} />
+          </Box>
+        </Box>
+      );
+    }}
+  </ResponsiveContext.Consumer>
 );

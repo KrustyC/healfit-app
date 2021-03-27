@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Box, Button, ResponsiveContext, Header, Menu, Text } from 'grommet';
+import { Anchor, Box, Button, ResponsiveContext, Header, Menu, Text } from 'grommet';
 import { Grommet as GrommetIcon, Menu as MenuIcon } from 'grommet-icons';
 
 export const Navbar: FC = () => (
@@ -15,7 +15,9 @@ export const Navbar: FC = () => (
           <Box direction="row" justify="center" align="center">
             <GrommetIcon color="brand" size="medium" />
             <Text size="xlarge" margin={{ vertical: 'none', horizontal: 'xsmall' }}>
-              Healfit
+              <Anchor href="/" style={{ textDecoration: 'none', fontWeight: 'normal' }}>
+                Healfit
+              </Anchor>
             </Text>
           </Box>
 
@@ -30,12 +32,21 @@ export const Navbar: FC = () => (
                     label: <Box pad="small">Login</Box>,
                     href: '/api/auth/login',
                   },
+                  {
+                    label: <Box pad="small">Recipes</Box>,
+                    href: '/recipes',
+                  },
                 ]}
               />
             </Box>
           ) : (
-            <Box justify="end" direction="row" gap="medium">
-              <Button primary href="/api/auth/login" label="Login" size="medium" />
+            <Box direction="row" align="center">
+              <Anchor href="/recipes" margin={{ right: '30px' }}>
+                Recipes
+              </Anchor>
+              <Box justify="end" direction="row" gap="medium">
+                <Button primary href="/api/auth/login" label="Login" size="medium" />
+              </Box>
             </Box>
           )}
         </Header>
