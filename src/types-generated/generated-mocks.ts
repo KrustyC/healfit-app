@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,@typescript-eslint/no-unused-vars,no-prototype-builtins */
-import { RecipeFiltersInput, GetRecipesResponse, Equipment, StepIngredient, StepLength, Step, Recipe, MetricUnit, UsUnit, RecipeIngredientAmount, RecipeIngredient, Nutrition, Nutrient, CaloricBreakdown, WeightPerServing } from './graphql';
+import { RecipeFiltersInput, GetRecipesResponse, Equipment, StepIngredient, StepLength, Step, Recipe, MetricUnit, UsUnit, RecipeIngredientAmount, RecipeIngredient, Nutrition, Nutrient, CaloricBreakdown, WeightPerServing } from './graphql-api';
 
 export const aRecipeFiltersInput = (overrides?: Partial<RecipeFiltersInput>): RecipeFiltersInput => {
     return {

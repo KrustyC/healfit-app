@@ -14,7 +14,7 @@ const columns = {
   xlarge: ['auto', 'auto', 'auto'],
 };
 
-export const Recipes: FC = () => {
+const Recipes: FC = () => {
   const { loading, error, data } = useQuery<{ recipes: GetRecipesResponse }>(GET_RECIPES, {
     variables: { filters: { diet: 'vegetarian' } },
   });
@@ -37,3 +37,5 @@ export const Recipes: FC = () => {
     </Box>
   );
 };
+
+export default Recipes;

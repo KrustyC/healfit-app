@@ -10,6 +10,6 @@ generates:
   src/types-generated/generated-mocks.ts:
     plugins:
       - 'graphql-codegen-typescript-mock-data':
-          typesFile: './graphql.ts'
+          typesFile: './graphql-api.ts'
           enumValues: upper-case#upperCase
           typenames: keep

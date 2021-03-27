@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Head from 'next/head';
 import { Box, Heading, Image, Main } from 'grommet';
 import { BaseLayout } from 'components/BaseLayout';
-import { Recipes } from './Recipes';
+import Recipes from './Recipes';
 
 const RecipesPage: FC = () => (
   <div>
