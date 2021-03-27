@@ -1,5 +1,12 @@
 version: '3.3'
 services:
+  redis:
+    image: redis
+    # command: ['redis-server', '--bind', 'redis', '--port', '6379']
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data:/data
   mongodb:
     image: mongo:3.6
     container_name: healfitmongodb

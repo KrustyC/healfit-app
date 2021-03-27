@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Box, Footer as GrommetFooter, Anchor, Text } from 'grommet';
+import { Box, Footer as GrommetFooter, Anchor, Text, ResponsiveContext } from 'grommet';
 import { Grommet as GrommetIcon } from 'grommet-icons';
 
 const links = [
@@ -30,32 +30,55 @@ const links = [
 
 export const Footer: FC = () => (
   <>
-    <GrommetFooter background="white" pad={{ horizontal: 'xlarge', vertical: 'large' }}>
-      <Box direction="row-responsive" gap="xsmall" flex="grow">
-        <Box align="center" direction="row" gap="small">
-          <GrommetIcon color="brand" size="large" />
-          <Text alignSelf="center" color="brand" size="large" weight="bold">
-            Healfit
-          </Text>
-        </Box>
-      </Box>
-      <Box direction="row" gap="xlarge" justify="end" flex="grow">
-        {links.map((item) => (
-          <Box gap="small" key={item.title}>
-            <Text weight="bold" color="dark" size="medium">
-              {item.title.toUpperCase()}
-            </Text>
-            <Box gap="xsmall" margin="0">
-              {item.links.map((link) => (
-                <Anchor key={link.to} href={link.to} size="small" color="dark-3">
-                  {link.label}
-                </Anchor>
-              ))}
+    <ResponsiveContext.Consumer>
+      {(size) => {
+        const isSmallScreen = ['small', 'medium'].includes(size);
+        return (
+          <GrommetFooter
+            background="white"
+            pad={{ horizontal: isSmallScreen ? 'large' : '15%', vertical: 'large' }}
+          >
+            <Box direction={isSmallScreen ? 'column' : 'row-responsive'} width="100%">
+              <Box
+                direction="row-responsive"
+                gap="xsmall"
+                flex="grow"
+                pad={{ vertical: isSmallScreen ? 'large' : 'none' }}
+              >
+                <Box align="center" direction="row" gap="small">
+                  <GrommetIcon color="brand" size="large" />
+                  <Text alignSelf="center" color="brand" size="large" weight="bold">
+                    Healfit
+                  </Text>
+                </Box>
+              </Box>
+
+              <Box
+                direction={isSmallScreen ? 'column' : 'row-responsive'}
+                gap="xlarge"
+                justify="end"
+                flex="grow"
+              >
+                {links.map((item) => (
+                  <Box gap="small" key={item.title}>
+                    <Text weight="bold" color="dark" size="medium">
+                      {item.title.toUpperCase()}
+                    </Text>
+                    <Box gap="xsmall" margin="0">
+                      {item.links.map((link) => (
+                        <Anchor key={link.to} href={link.to} size="small" color="dark-3">
+                          {link.label}
+                        </Anchor>
+                      ))}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
             </Box>
-          </Box>
-        ))}
-      </Box>
-    </GrommetFooter>
+          </GrommetFooter>
+        );
+      }}
+    </ResponsiveContext.Consumer>
     <GrommetFooter
       alignContent="center"
       justify="center"

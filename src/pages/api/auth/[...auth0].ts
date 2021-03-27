@@ -40,16 +40,13 @@ async function afterCallback(
   res: NextApiResponse,
   session: Session
 ): Promise<Session> {
-  console.log('dio emrda');
   if (!session.user) {
     return session;
   }
 
   const { email, name, sub } = session.user;
 
-  console.log('suino');
   const user = await UserModel.findOne({ auth0Id: sub }).exec();
-  console.log('suino 23', user);
 
   if (!user) {
     try {

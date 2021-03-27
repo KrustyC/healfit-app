@@ -4,6 +4,20 @@ export const GET_RECIPES = gql`
   query GetRecipes($filters: RecipeFiltersInput!) {
     recipes(filters: $filters) {
       results {
+        id
+        title
+        image
+        vegetarian
+        vegan
+        glutenFree
+        dairyFree
+        cheap
+        sustainable
+        aggregateLikes
+        healthScore
+        readyInMinutes
+        servings
+        summary
         ingredients {
           amount {
             metric {
@@ -18,7 +32,6 @@ export const GET_RECIPES = gql`
             name
           }
         }
-        title
       }
       totalResults
       offset

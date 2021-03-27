@@ -1,8 +1,6 @@
 import { FC } from 'react';
 import Head from 'next/head';
-import { Box, Button, Heading, Image, Main, Paragraph, Text } from 'grommet';
-import { Navbar } from 'components/Navbar';
-import { Footer } from 'components/Footer';
+import { Box, Button, Heading, Image, Main, Text } from 'grommet';
 import { Feature } from 'components/Feature';
 
 const Home: FC = () => (
@@ -12,8 +10,6 @@ const Home: FC = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Box>
-      <Navbar />
-
       <Main direction="column" align="center" pad={{ vertical: 'large' }}>
         <Box direction="column" align="center" pad={{ vertical: 'small', horizontal: 'xlarge' }}>
           <Heading size="large" textAlign="center">
@@ -73,8 +69,6 @@ const Home: FC = () => (
           />
         </Box>
       </Main>
-
-      <Footer />
     </Box>
   </div>
 );

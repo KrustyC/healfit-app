@@ -16,6 +16,21 @@ type Recipe {
   title: String
   ingredients: [RecipeIngredient]
   nutrition: Nutrition
+
+  vegetarian: Boolean
+  vegan: Boolean
+  glutenFree: Boolean
+  dairyFree: Boolean
+  veryHealthy: Boolean
+  cheap: Boolean
+  veryPopular: Boolean
+  sustainable: Boolean
+  weightWatcherSmartPoints: Int
+  aggregateLikes: Int
+  healthScore: Int
+  readyInMinutes: Int
+  servings: Int
+  summary: String
 }
 
 type MetricUnit {

@@ -24,6 +24,20 @@ export const aRecipe = (overrides?: Partial<Recipe>): Recipe => {
         title: overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'omnis',
         ingredients: overrides && overrides.hasOwnProperty('ingredients') ? overrides.ingredients! : [aRecipeIngredient()],
         nutrition: overrides && overrides.hasOwnProperty('nutrition') ? overrides.nutrition! : aNutrition(),
+        vegetarian: overrides && overrides.hasOwnProperty('vegetarian') ? overrides.vegetarian! : true,
+        vegan: overrides && overrides.hasOwnProperty('vegan') ? overrides.vegan! : true,
+        glutenFree: overrides && overrides.hasOwnProperty('glutenFree') ? overrides.glutenFree! : false,
+        dairyFree: overrides && overrides.hasOwnProperty('dairyFree') ? overrides.dairyFree! : false,
+        veryHealthy: overrides && overrides.hasOwnProperty('veryHealthy') ? overrides.veryHealthy! : true,
+        cheap: overrides && overrides.hasOwnProperty('cheap') ? overrides.cheap! : true,
+        veryPopular: overrides && overrides.hasOwnProperty('veryPopular') ? overrides.veryPopular! : true,
+        sustainable: overrides && overrides.hasOwnProperty('sustainable') ? overrides.sustainable! : true,
+        weightWatcherSmartPoints: overrides && overrides.hasOwnProperty('weightWatcherSmartPoints') ? overrides.weightWatcherSmartPoints! : 9063,
+        aggregateLikes: overrides && overrides.hasOwnProperty('aggregateLikes') ? overrides.aggregateLikes! : 2752,
+        healthScore: overrides && overrides.hasOwnProperty('healthScore') ? overrides.healthScore! : 8276,
+        readyInMinutes: overrides && overrides.hasOwnProperty('readyInMinutes') ? overrides.readyInMinutes! : 213,
+        servings: overrides && overrides.hasOwnProperty('servings') ? overrides.servings! : 680,
+        summary: overrides && overrides.hasOwnProperty('summary') ? overrides.summary! : 'sequi',
     };
 };
 

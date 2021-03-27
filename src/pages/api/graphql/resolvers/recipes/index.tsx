@@ -1,9 +1,12 @@
+import hash from 'object-hash';
 import { QueryResolvers, RecipeResolvers } from 'types-generated/graphql-api';
 import { aGetRecipesResponse, aRecipe, aRecipeIngredient } from 'types-generated/generated-mocks';
 import { SpoonacularApi } from 'services/SpoonacularApi';
+import { redisClient } from 'services/RedisClient';
 import { range } from 'helpers/array';
 
 const spoonacularApi = new SpoonacularApi();
+const ONE_DAY_IN_SECONDS = 86400;
 
 export const getIngredientByRecipe: RecipeResolvers['ingredients'] = async (recipe) => {
   if (process.env.NODE_ENV === 'development') {
@@ -16,11 +19,28 @@ export const getIngredientByRecipe: RecipeResolvers['ingredients'] = async (reci
 export const getRecipes: QueryResolvers['recipes'] = async (_, args) => {
   const { filters } = args;
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' && process.env.USE_MOCKS === '1') {
     return aGetRecipesResponse({ results: range(5).map(() => aRecipe()) });
   }
 
-  // @TODO Here I should handle some redis bullshit based on filters
+  const key = hash(filters);
 
-  return spoonacularApi.getRecipes(filters);
+  if (redisClient?.isConnected) {
+    try {
+      const cachedResponse = await redisClient.get(key);
+      if (cachedResponse) {
+        return JSON.parse(cachedResponse);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
+  }
+
+  // return [];
+  const response = await spoonacularApi.getRecipes(filters);
+
+  redisClient.set(key, JSON.stringify(response), ONE_DAY_IN_SECONDS);
+
+  return response;
 };

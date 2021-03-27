@@ -34,18 +34,14 @@ export class SpoonacularApi extends HttpClient {
   };
 
   public getRecipes = async (filters: RecipeFiltersInput = null): Promise<GetRecipesResponse> => {
-    // @TODO Use Redis here
-
     const res = await this.instance.get<GetRecipesResponse>(`/recipes/complexSearch`, {
       params: {
         ...(filters || {}),
         // addRecipeInformation: true,
         addRecipeNutrition: true,
-        number: 2,
+        number: 30,
       },
     });
-
-    console.log(res.data.results.map((x) => console.log(x.nutrition)));
 
     if (res.status !== 200) {
       return {

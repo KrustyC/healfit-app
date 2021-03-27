@@ -3,8 +3,10 @@ import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import { createGlobalStyle } from 'styled-components';
 import { UserProvider } from '@auth0/nextjs-auth0';
-import { Grommet } from 'grommet';
+import { Grommet, Box } from 'grommet';
 import { useApollo } from 'hooks/useApollo';
+import { Navbar } from 'components/Navbar';
+import { Footer } from 'components/Footer';
 import { theme } from '../theme';
 
 const GlobalStyle = createGlobalStyle`
@@ -22,7 +24,13 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       <GlobalStyle />
       <UserProvider>
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
+          <Box>
+            <Navbar />
+
+            <Component {...pageProps} />
+
+            <Footer />
+          </Box>
         </ApolloProvider>
       </UserProvider>
     </Grommet>
