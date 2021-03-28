@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import Head from 'next/head';
-import { Box, Button, Heading, Image, Main, Text } from 'grommet';
+import { Box, Button, Heading, Image, Main, ResponsiveContext, Text } from 'grommet';
 import { Feature } from 'components/Feature';
 import { BaseLayout } from 'components/BaseLayout';
 
@@ -27,10 +27,17 @@ const Home: FC = () => (
           />
         </Box>
         <Box pad={{ vertical: 'large', horizontal: 'xlarge' }}>
-          <Image
-            width="420px"
-            src="https://uploads-ssl.webflow.com/5e3c7a535a0b8ce5f3926ef8/5ffee912400bc83aab6e46bd_Mockup-3.png"
-          />
+          <ResponsiveContext.Consumer>
+            {(size) => {
+              const isSmallScreen = ['small', 'medium'].includes(size);
+              return (
+                <Image
+                  width={isSmallScreen ? '100%' : '420px'}
+                  src="https://uploads-ssl.webflow.com/5e3c7a535a0b8ce5f3926ef8/5ffee912400bc83aab6e46bd_Mockup-3.png"
+                />
+              );
+            }}
+          </ResponsiveContext.Consumer>
         </Box>
 
         <Box
