@@ -1,96 +1,61 @@
 /* eslint-disable no-console */
-import { createClient, RetryStrategyOptions } from 'redis';
+import zlib from 'zlib';
+import { Buffer } from 'buffer';
+import { promisify } from 'util';
+import redis from 'redis';
 
 export type CacheKey = string;
 
-export const TOTAL_RETRY_TIME = 1000 * 60 * 60;
-export const MAX_ATTEMPTS = 10;
-export const RECONNECT_INTERVAL = 300;
-export const MAX_RECONNECT_INTERVAL = RECONNECT_INTERVAL * MAX_ATTEMPTS;
+function getClient() {
+  const client = redis.createClient({
+    url: process.env.REDIS_URL,
+  });
 
-export const REDIS_ERRORS: { [key: string]: { code?: string; message: string } } = {
-  connectionRefused: {
-    code: 'ECONNREFUSED',
-    message: 'Redis - The server refused the connection',
-  },
-  retryTimeoutExceeded: {
-    message: 'Redis - Retry time exhausted',
-  },
-  maxAttemptsExceeded: {
-    message: 'Redis - Maximum attempts reached',
-  },
-};
+  client.on('error', (err): void => {
+    console.error('Redis', err);
+  });
 
-export function retryStrategy(options: Partial<RetryStrategyOptions>): number | Error {
-  if (options.error && options.error.code === REDIS_ERRORS.connectionRefused.code) {
-    // End reconnecting on a specific error and flush all commands with
-    // a individual error
-    return new Error(REDIS_ERRORS.connectionRefused.message);
-  }
-  if ((options.total_retry_time || 0) > TOTAL_RETRY_TIME) {
-    // End reconnecting after a specific timeout and flush all commands
-    // with a individual error
-    return new Error(REDIS_ERRORS.retryTimeoutExceeded.message);
-  }
-  if ((options.attempt || 0) > MAX_ATTEMPTS) {
-    // End reconnecting with built in error
-    return new Error(REDIS_ERRORS.maxAttemptsExceeded.message);
-  }
-  // reconnect after
-  return Math.min((options.attempt || 0) * RECONNECT_INTERVAL, MAX_RECONNECT_INTERVAL);
+  return client;
 }
 
-const { REDIS_HOST, REDIS_PORT } = process.env;
+async function get(key: CacheKey): Promise<string | undefined> {
+  const client = getClient();
 
-const client = createClient({
-  host: REDIS_HOST,
-  port: parseInt(REDIS_PORT || '0', 10),
-  enable_offline_queue: false,
-  retry_strategy: retryStrategy,
-});
+  const inflate = promisify(zlib.inflate);
+  const getAsync = promisify(client.get).bind(client);
 
-client.on('connect', () => {
-  console.info(`REDIS connected ${REDIS_HOST}:${REDIS_PORT}`);
-});
+  let result;
+  try {
+    const compressedResult = await getAsync(key);
+    result = await inflate(Buffer.from(compressedResult, 'base64'));
+  } catch (e) {
+    console.error('ERROR REDIS GET:', e.message);
+  }
 
-client.on('error', (err) => {
-  console.error('REDIS Error', err);
-});
+  client.quit();
 
-client.on('reconnecting', () => {
-  console.info('REDIS is reconnecting');
-});
-
-client.on('end', () => {
-  console.info('REDIS connection ended or could not be established');
-});
-
-function get(key: CacheKey): Promise<string | undefined> {
-  return new Promise<string | undefined>((resolve, reject) =>
-    client.get(key, (err, result) => {
-      if (err) {
-        return reject(err.message);
-      }
-      return resolve(result === null ? undefined : result);
-    })
-  );
+  return result?.toString();
 }
 
-function set(key: CacheKey, value: string, ttlInSeconds: number): Promise<boolean> {
-  return new Promise<boolean>((resolve, reject) =>
-    client.set(key, value, 'EX', ttlInSeconds, (err, result) => {
-      if (result === 'OK') {
-        return resolve(true);
-      }
-      return reject(err ? err.message : 'Redis set failed');
-    })
-  );
+async function set(key: CacheKey, value: string, ttlInSeconds: number): Promise<boolean> {
+  const client = getClient();
+
+  const setAsync = promisify(client.set).bind(client);
+  const deflate = promisify(zlib.deflate);
+  let success = false;
+
+  try {
+    const compressedValue = await deflate(value);
+
+    await setAsync(key, compressedValue.toString('base64'), 'EX', ttlInSeconds);
+    success = true;
+  } catch (e) {
+    console.error('ERROR REDIS SET:', e.message);
+  }
+
+  client.quit();
+
+  return success;
 }
 
-export const redisClient = {
-  get,
-  set,
-  get isConnected(): boolean {
-    return client.connected;
-  },
-};
+export { get, set };

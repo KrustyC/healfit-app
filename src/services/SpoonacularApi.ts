@@ -8,7 +8,7 @@ import {
   RecipeIngredient,
   Step,
 } from 'types-generated/graphql-api';
-import { redisClient } from 'services/RedisClient';
+import * as redis from 'services/RedisClient';
 import { HttpClient } from './HttpClient';
 
 const { SPOONACULAR_API_KEY } = process.env;
@@ -39,16 +39,14 @@ export class SpoonacularApi extends HttpClient {
   public getRecipes = async (filters: RecipeFiltersInput = null): Promise<GetRecipesResponse> => {
     const key = hash(filters);
 
-    if (redisClient?.isConnected) {
-      try {
-        const cachedResponse = await redisClient.get(key);
-        if (cachedResponse) {
-          return JSON.parse(cachedResponse);
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+    try {
+      const cachedResponse = await redis.get(key);
+      if (cachedResponse) {
+        return JSON.parse(cachedResponse);
       }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
     }
 
     const res = await this.instance.get<GetRecipesResponse>(`/recipes/complexSearch`, {
@@ -56,7 +54,7 @@ export class SpoonacularApi extends HttpClient {
         ...(filters || {}),
         // addRecipeInformation: true,
         addRecipeNutrition: true,
-        number: 30,
+        number: 15,
       },
     });
 
@@ -69,7 +67,7 @@ export class SpoonacularApi extends HttpClient {
       };
     }
 
-    redisClient.set(key, JSON.stringify(res.data), ONE_DAY_IN_SECONDS);
+    redis.set(key, JSON.stringify(res.data), ONE_DAY_IN_SECONDS);
 
     return res.data;
   };
@@ -77,16 +75,14 @@ export class SpoonacularApi extends HttpClient {
   public getRecipeIngredients = async (recipe: Recipe): Promise<RecipeIngredient[]> => {
     const key = `recipe-${recipe.id}-ingredients`;
 
-    if (redisClient?.isConnected) {
-      try {
-        const cachedResponse = await redisClient.get(key);
-        if (cachedResponse) {
-          return JSON.parse(cachedResponse) as RecipeIngredient[];
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+    try {
+      const cachedResponse = await redis.get(key);
+      if (cachedResponse) {
+        return JSON.parse(cachedResponse) as RecipeIngredient[];
       }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
     }
 
     const res = await this.instance.get<{ ingredients: RecipeIngredient[] }>(
@@ -97,7 +93,7 @@ export class SpoonacularApi extends HttpClient {
       return [];
     }
 
-    redisClient.set(key, JSON.stringify(res.data.ingredients), ONE_DAY_IN_SECONDS);
+    redis.set(key, JSON.stringify(res.data.ingredients), ONE_DAY_IN_SECONDS);
 
     return res.data.ingredients;
   };
@@ -105,16 +101,14 @@ export class SpoonacularApi extends HttpClient {
   public getRecipeSteps = async (recipe: Recipe): Promise<Step[]> => {
     const key = `recipe-${recipe.id}-steps`;
 
-    if (redisClient?.isConnected) {
-      try {
-        const cachedResponse = await redisClient.get(key);
-        if (cachedResponse) {
-          return JSON.parse(cachedResponse) as Step[];
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
+    try {
+      const cachedResponse = await redis.get(key);
+      if (cachedResponse) {
+        return JSON.parse(cachedResponse) as Step[];
       }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
     }
 
     const res = await this.instance.get<{ name: string; steps: Step[] }[]>(
@@ -127,7 +121,7 @@ export class SpoonacularApi extends HttpClient {
 
     const steps = res.data.length >= 1 ? res.data[0].steps : [];
 
-    redisClient.set(key, JSON.stringify(steps), ONE_DAY_IN_SECONDS);
+    redis.set(key, JSON.stringify(steps), ONE_DAY_IN_SECONDS);
 
     return steps;
   };

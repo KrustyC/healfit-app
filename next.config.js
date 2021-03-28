@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    graphqlEndpoint: process.env.BASE_GRAPHQL_URL,
+    graphqlEndpoint: `${process.env.BASE_URL}/api/graphql`,
   },
   webpack: (config) => {
     config.module.rules.push({
