@@ -4,7 +4,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient<NormalizedCacheObject>({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: true,
     link: new HttpLink({
       uri: process.env.graphqlEndpoint,
     }),
